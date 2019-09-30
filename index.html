@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"></script>
+    <title></title>
+    <style>
+      button {
+        width:20%;
+        height: 100px;
+        background-color: #5c6ac4;
+        color : white;
+        font-size: 2em;
+        border-radius: 5px;
+        margin-right: 40%;
+        margin-left: 40%;
+        margin-bottom: 25px;
+
+      }
+      button:hover {
+        background-color:#2f3fa1;
+        cursor: pointer;
+
+      }
+
+      #price {
+        font-size: 2em;
+        font-weight: bold;
+        font-family:arial;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div style="width:100%; text-align:center">
+      <h1>This button will update the price of <a href="https://bitossi.myshopify.com/products/iss">this product</a> based on the longitude of the ISS</h1>
+    <button>Update Price 🚀</button></br>
+    <span id="price">Unknown</span></br>
+    <span id="price"><a href="https://bitossi.myshopify.com/products/iss">View the Product</a></span>
+
+    </div>
+
+    <script>
+      $("button").click(function(){
+        $("#price").text("Getting ISS Position")
+        $.ajax({
+          type: "POST",
+          url: "/",
+          success: function(data){console.log(data);$("#price").text("$" + data)},
+          dataType: ""
+        });
+      })
+
+    </script>
+  </body>
+</html>

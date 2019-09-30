@@ -67,7 +67,6 @@ function getISSPosition(callback) {
       console.log(err);
     } else {
       var data = JSON.parse(resp["body"]);
-      console.log(data);
       callback(data);
     }
   });
@@ -98,16 +97,19 @@ function updateVariantPrice(variantID, price, callback) {
   });
 };
 
+// Bring it all together - update variant price with ISS
 function updatePriceWithISSPosition(variantID, callback) {
   getISSPosition(function(data){
     var priceArray = data.iss_position.longitude.split(".");
     var price = priceArray[0] + "." + priceArray[1].substring(0,2);
+    if (price < 0) {price = (price * -1)}; // Handle negative longitude
     updateVariantPrice(VARIANTID, price, function(d) {
       console.log("New Price is " + price);
       callback(d);
     });
   });
 };
+
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname+'/index.html'));
@@ -130,12 +132,11 @@ app.listen(port, function() {
   // getVariant(VARIANTID, function(data){console.log(JSON.parse(data))})
 
   // 3. Get ISS Position
-  // getISSPosition(function(data));
+  // getISSPosition(function(data){console.log(data)});
 
   // 4. Update variant with ISS Position
   updatePriceWithISSPosition(VARIANTID, function(data) {
     console.log(data);
   });
-
   console.log("Lunch and learn running on port: " + port);
-})
+});

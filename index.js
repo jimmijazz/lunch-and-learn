@@ -1,4 +1,10 @@
-const express = require('express'); // Install request (jquery for node)
+/*
+Lunch and learn example.
+You'll need node.js and some familiarity to get set up. Feel free to ping @bitossi
+or joshua.bitossi@shopify.com
+*/
+
+const express = require('express');
 const app = express();  // Establish the express app
 var request = require('request'); // Library for making API calls
 var bodyParser = require('body-parser'); // For decoding JSON
@@ -11,7 +17,7 @@ if (app.get('env') === 'development') {
   var port = process.env.PORT;
 };
 
-// Our private app credentials
+// Our private app credentials. Change to your store values.
 const API_KEY = process.env.API_KEY;
 const PASSWORD = process.env.PASSWORD;
 const SHOPURL = "bitossi.myshopify.com";

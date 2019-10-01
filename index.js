@@ -17,7 +17,7 @@ const PASSWORD = process.env.PASSWORD;
 const SHOPURL = "bitossi.myshopify.com";
 const VARIANTID = 19568251764758; // The variant ID that we want to update
 
-// 1. Get specific variant
+// 1. Get all products
 function getAllProducts(callback) {
   // Important thing here - we're using our API keys to request /products.json
   var requestURL = "https://" + API_KEY+ ":" + PASSWORD+ "@" + SHOPURL + "/admin/api/2019-07/products.json";
@@ -122,8 +122,6 @@ app.post('/', function(req, res) {
   })
 });
 
-
-
 app.listen(port, function() {
   // 1. Get All products
   // getAllProducts(function(data){console.log(JSON.parse(data))})
@@ -134,6 +132,8 @@ app.listen(port, function() {
   // 3. Get ISS Position
   // getISSPosition(function(data){console.log(data)});
 
+  // 4. Update variant price
+  // updateVariantPrice(VARIANTID, 200000000, function(d){console.log(d)});
   // 4. Update variant with ISS Position
   updatePriceWithISSPosition(VARIANTID, function(data) {
     console.log(data);

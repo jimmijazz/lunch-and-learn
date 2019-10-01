@@ -63,7 +63,7 @@ function getVariant(variantID, callback) {
 
 // 3. Get ISS Position
 function getISSPosition(callback) {
-  // Make a request to coinmarketcap for bitcoin
+  // Make a request for ISS position
   request({
     url : "http://api.open-notify.org/iss-now.json",
     method: "GET",
@@ -81,7 +81,7 @@ function getISSPosition(callback) {
 
 // 4. Update the variant price
 function updateVariantPrice(variantID, price, callback) {
-  // Important thing here - we're using our API keys to request /products.json
+  // update specific variant
   var requestURL = "https://" + API_KEY+ ":" + PASSWORD+ "@" + SHOPURL + "/admin/api/2019-07/variants/" + variantID + ".json"
 
   request({
@@ -108,7 +108,7 @@ function updatePriceWithISSPosition(variantID, callback) {
   getISSPosition(function(data){
     var priceArray = data.iss_position.longitude.split(".");
     var price = priceArray[0] + "." + priceArray[1].substring(0,2);
-    if (price < 0) {price = (price * -1)}; // Handle negative longitude
+    if (price < 0) {price = (price * -1)}; // Handle negative longitude by just making positive
     updateVariantPrice(VARIANTID, price, function(d) {
       console.log("New Price is " + price);
       callback(d);
@@ -116,11 +116,12 @@ function updatePriceWithISSPosition(variantID, callback) {
   });
 };
 
-
+// Dashboard
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname+'/index.html'));
 });
 
+// Handle request from dashboard
 app.post('/', function(req, res) {
   console.log("recieved");
   updatePriceWithISSPosition(VARIANTID, function(data) {
@@ -128,6 +129,7 @@ app.post('/', function(req, res) {
   })
 });
 
+// Functions - uncomment the one you want to use during testing. 
 app.listen(port, function() {
   // 1. Get All products
   // getAllProducts(function(data){console.log(JSON.parse(data))})
